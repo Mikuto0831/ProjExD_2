@@ -59,6 +59,11 @@ def main():
         
         screen.blit(bg_img, [0, 0])  # 背景描画
 
+        # 衝突判定
+        if kk_rct.colliderect(bb_rct):
+            print("Game Over")
+            return
+
         # キー操作読み取り部
         key_lst = pg.key.get_pressed()  # キー操作読み取り
         sum_mv = [0, 0]
