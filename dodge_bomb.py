@@ -67,6 +67,13 @@ def show_gameover(screen:pg.Surface)->None:
     time.sleep(5)
 
 def get_bb_accs_imgs(limit:int)->tuple[list[int],list[pg.Surface]]:
+    """
+    加速度と拡大されていく画像を生成し返却します
+
+    :param: int limit : 最大段階
+    :return: [accs,imgs]:加速度と画像のtupleを返します。加速度と画像はlimitに渡した分の長さがあります
+    :rtype: tuple[list[int],list[pg.Surface]]: [加速度s,画像s]
+    """
     # 加速度のリスト
     accs = [a for a in range(1, limit+1)]
 
@@ -76,6 +83,12 @@ def get_bb_accs_imgs(limit:int)->tuple[list[int],list[pg.Surface]]:
     return (accs,imgs)
 
 def get_bb_img(r:int)->pg.Surface:
+    """
+    渡された値の倍数分の画像を作成します
+    :param: int r: 半径を何倍にするか設定する任意の値
+    :return: bb_img: 爆弾の画像
+    :rtype: pg.Surface
+    """
     bb_img = pg.Surface((20*r,20*r))
     bb_img.set_colorkey((0,0,0)) # 爆弾の背景画像を透過する
     pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
