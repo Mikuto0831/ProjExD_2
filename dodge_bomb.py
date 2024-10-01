@@ -45,9 +45,16 @@ def show_gameover(screen:pg.Surface)->None:
     txt_rct = txt.get_rect(center=(WIDTH//2,HEIGHT//2))
     screen.blit(txt,txt_rct)
 
+    # 泣いてるこうかとん表示部
+    for i in range(2):
+        nkk_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 1.1)
+        nkk_rct =  nkk_img.get_rect()
+        nkk_rct.center = (WIDTH//2+200+(-400*i),HEIGHT//2)
+        screen.blit(nkk_img,nkk_rct)
+
     
     pg.display.update()
-    time.sleep(2)
+    time.sleep(5)
 
 def main():
     # 画面初期化
