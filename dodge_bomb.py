@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import random
 import pygame as pg
 
@@ -28,6 +29,16 @@ def check_bound(obj_rct:pg.Rect):
     if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:
         tate = False
     return yoko,tate
+
+def show_gameover(screen:pg.Surface):
+    trans_img = pg.Surface((WIDTH,HEIGHT))
+    pg.draw.rect(trans_img,(0,0,0),pg.Rect(0,0,WIDTH,HEIGHT))
+    trans_img.set_alpha(150)
+    trans_rct = trans_img.get_rect()
+    screen.blit(trans_img,trans_rct)
+
+    pg.display.update()
+    time.sleep(5)
 
 def main():
     # 画面初期化
@@ -62,6 +73,7 @@ def main():
         # 衝突判定
         if kk_rct.colliderect(bb_rct):
             print("Game Over")
+            show_gameover(screen)
             return
 
         # キー操作読み取り部
