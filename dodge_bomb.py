@@ -19,6 +19,10 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 def check_bound(obj_rct:pg.Rect):
     """
+
+    動くオブジェクトが画面端に当たってい無い場合、その方向に対しTrueを返します。
+    返すtupleは(横,縦)の順番です。
+
     :param Rect obj_rct : こうかとん、または爆弾のRect
     :return: 真理値タプルを返します(横,縦)。画面内ならTrue、画面外ならFalse
     :rtype: (bool,bool)
@@ -31,6 +35,12 @@ def check_bound(obj_rct:pg.Rect):
     return yoko,tate
 
 def show_gameover(screen:pg.Surface)->None:
+    """
+
+    ゲームオーバー時の画面を描画します。
+
+    :param: Surface screen : ゲーム画面の描画先
+    """
     # 背景暗転部
     trans_img = pg.Surface((WIDTH,HEIGHT))
     pg.draw.rect(trans_img,(0,0,0),pg.Rect(0,0,WIDTH,HEIGHT))
