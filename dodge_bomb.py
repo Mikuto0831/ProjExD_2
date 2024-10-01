@@ -105,6 +105,38 @@ def get_target_mv(target:pg.Rect,my:pg.Rect)->tuple[int]:
     """
     pass
 
+def get_kk_img_map()->dict[tuple[int,int]:pg.Surface]:
+    """
+    
+    飛ぶ方向に従うこうかとんの辞書を返えす関数
+
+    :return: キー操作パターンをKeyとし、対応した画像を値とした辞書を返します
+    :rtype: dict[tuple[int,int]:pg.Surface]
+    """
+
+    # 真ん中より左側3つ分のパターン
+    mv_sums1 = (
+        (-5,-5),(-5,0),(-5,5),
+    )
+    # 真ん中から右側5つ分のパターン
+    mv_sums2 = (
+        (0,-5),(5,-5),(5,0),
+        (5,5),(0,5),
+    )
+
+    # 無動作時のパターンで初期化
+    img_dict = {(0,0):pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)}
+
+    # 真ん中より左側3つ分の画像作成
+    for i in range(len(mv_sums1)):
+        img_dict[mv_sums1[i]] = pg.transform.rotozoom(pg.image.load("fig/3.png"), -45.0+45.0*float(i), 0.9)
+    
+    # 残り分作成
+    for i in range(len(mv_sums2)):
+        tmp = pg.transform.rotozoom(pg.image.load("fig/3.png"), -90+45.0*float(i), 0.9)
+        img_dict[mv_sums2[i]] = pg.transform.flip(tmp, True, False)
+
+    return img_dict
 
 def main():
     # 画面初期化
@@ -114,7 +146,8 @@ def main():
     bg_img = pg.image.load("fig/pg_bg.jpg")  # 背景画像読み込み
 
     # こうかとん初期化
-    kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
+    kk_imgs = get_kk_img_map()
+    kk_img:pg.Surface = kk_imgs[(0,0)]
     kk_rct = kk_img.get_rect()
     kk_rct.center = 300, 200
 
@@ -148,7 +181,8 @@ def main():
             if key_lst[k]:
                 sum_mv[0] += DELTA[k][0]
                 sum_mv[1] += DELTA[k][1]
-        
+        kk_img = kk_imgs[tuple(sum_mv)]
+
         # こうかとんの移動反映
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True,True):
