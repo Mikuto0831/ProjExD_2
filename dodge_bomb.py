@@ -30,15 +30,24 @@ def check_bound(obj_rct:pg.Rect):
         tate = False
     return yoko,tate
 
-def show_gameover(screen:pg.Surface):
+def show_gameover(screen:pg.Surface)->None:
+    # 背景暗転部
     trans_img = pg.Surface((WIDTH,HEIGHT))
     pg.draw.rect(trans_img,(0,0,0),pg.Rect(0,0,WIDTH,HEIGHT))
     trans_img.set_alpha(150)
     trans_rct = trans_img.get_rect()
     screen.blit(trans_img,trans_rct)
 
+    # GameOver文字表示部
+    font = pg.font.Font(None,80)
+    txt = font.render("Game Over",
+                      True,(255,255,255))
+    txt_rct = txt.get_rect(center=(WIDTH//2,HEIGHT//2))
+    screen.blit(txt,txt_rct)
+
+    
     pg.display.update()
-    time.sleep(5)
+    time.sleep(2)
 
 def main():
     # 画面初期化
