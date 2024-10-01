@@ -95,6 +95,17 @@ def get_bb_img(r:int)->pg.Surface:
 
     return bb_img
 
+def get_target_mv(target:pg.Rect,my:pg.Rect)->tuple[int]:
+    """
+    ターゲットに追従するためのベクトルを返します
+    :param Rect target : ターゲット先のRect
+    :param Rect my : 自身のRect
+    :return: 速度ベクトル
+    :rtype: tuple[int]
+    """
+    pass
+
+
 def main():
     # 画面初期化
     pg.display.set_caption("逃げろ！こうかとん")
