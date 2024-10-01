@@ -66,6 +66,22 @@ def show_gameover(screen:pg.Surface)->None:
     pg.display.update()
     time.sleep(5)
 
+def get_bb_accs_imgs(limit:int)->tuple[list[int],list[pg.Surface]]:
+    # 加速度のリスト
+    accs = [a for a in range(1, limit+1)]
+
+    # 拡大爆弾リスト
+    imgs = [get_bb_img(i) for i in range(1, limit+1)]
+
+    return (accs,imgs)
+
+def get_bb_img(r:int)->pg.Surface:
+    bb_img = pg.Surface((20*r,20*r))
+    bb_img.set_colorkey((0,0,0)) # 爆弾の背景画像を透過する
+    pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
+
+    return bb_img
+
 def main():
     # 画面初期化
     pg.display.set_caption("逃げろ！こうかとん")
@@ -79,9 +95,8 @@ def main():
     kk_rct.center = 300, 200
 
     # 爆弾初期化
-    bb_img = pg.Surface((20,20))
-    bb_img.set_colorkey((0,0,0)) # 爆弾の背景画像を透過する
-    pg.draw.circle(bb_img,(255,0,0),(10,10),10)
+    bb_accs, bb_imgs = get_bb_accs_imgs(10)
+    bb_img = bb_imgs[0]
     bb_rct = bb_img.get_rect()
     bb_rct.center = random.randint(0,WIDTH),random.randint(0,HEIGHT)
     vx,vy = +5,+5  # 爆弾の移動量初期化
@@ -117,7 +132,10 @@ def main():
         screen.blit(kk_img, kk_rct)
 
         # 爆弾の移動反映
-        bb_rct.move_ip(vx,vy)
+        bb_img = bb_imgs[min(tmr//500, 9)]
+        avx = vx*bb_accs[min(tmr//500, 9)]
+        avy = vy*bb_accs[min(tmr//500, 9)]
+        bb_rct.move_ip(avx,avy)
         yoko, tate = check_bound(bb_rct)
         if not yoko:
             vx *= -1
